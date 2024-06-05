@@ -51,10 +51,9 @@ pipeline {
                 
                 script{
                     
-                    withSonarQubeEnv(sonar) {
+                    withSonarQubeEnv(credentialsId : sonar) {
                         
-                        sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Project -Dsonar.projectKey=Project \
-                                -Dsonar.java.binaries=. '''
+                        sh 'mvn clean sonar:sonar'
                     }
                 }
                     
