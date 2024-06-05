@@ -45,21 +45,21 @@ pipeline {
                 }
             
         }
-        stage('Sonaqube Analysis ')  {
-            // We have to configure sonar cube server on timestamp 1:08:15 in the video  
-            steps{
+        // stage('Sonaqube Analysis ')  {
+        //     // We have to configure sonar cube server on timestamp 1:08:15 in the video  
+        //     steps{
                 
-                script{
+        //         script{
                     
-                    withSonarQubeEnv(sonar) {
+        //             withSonarQubeEnv(sonar) {
                         
-                        sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Project -Dsonar.projectKey=Project \
-                                -Dsonar.java.binaries=. '''
-                    }
-                }
+        //                 sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Project -Dsonar.projectKey=Project \
+        //                         -Dsonar.java.binaries=. '''
+        //             }
+        //         }
                     
-            }
-        }
+        //     }
+        // }
         
         stage('Quality Gate') {
             //  1:15:08 Webhook Integration must done 
