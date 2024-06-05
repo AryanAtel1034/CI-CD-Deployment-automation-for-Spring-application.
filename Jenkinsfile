@@ -38,15 +38,7 @@ pipeline {
             }
         }
         stage('File System Scan (Trivy)') {
-
-            // TRIVY Code To install on jenkins 
-            /* sudo apt-get install wget apt-transport-https gnupg lsb-release
-            wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-            echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
-            sudo apt-get update
-            sudo apt-get install trivy */
-             
-                
+  
                 steps{
                     sh "trivy fs --format table -o trivy-fs-report.html ."
 
@@ -86,14 +78,17 @@ pipeline {
 
             }
         }
-        // stage('Publish to Nexus') {
-        //     // TODO 1:17:09
-        //     steps{
-        //         // todo
-        //         WithMaven(globalMavenSettingConfig: 'global-setting', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: "", T)
-        //         sh "mvm deploy"
-        //     }
-        // }
+        stage('Publish to Nexus') {
+            // TODO 1:17:09
+            steps{
+                // todo
+               withMaven(globalMavenSettingsConfig: 'global-settings', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true)
+                {
+    
+                sh "mvm deploy"
+                }
+            }
+        }
         //  TILL 1:21:00
 
         // stage('compile') {
