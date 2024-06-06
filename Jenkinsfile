@@ -110,9 +110,8 @@ pipeline {
         {
             steps
             {
-                sh 'docker build -t $BUILD_NUMBER:v1.$BUILD_ID .'
-                sh 'docker tag $BUILD_NUMBER:v1.$BUILD_ID aryanatel1034/$JOB_NAME:v1.$BUILD_ID' 
-                sh 'docker tag $JOBBUILD_NUMBER_NAME.:v1.$BUILD_ID aryanatel1034/$JOB_NAME:latest' 
+                
+                sh 'docker build -t aryanatel1034/newbuild:$BUILD_NUMBER .'
             }
         }
 
@@ -126,7 +125,8 @@ pipeline {
                     withCredentials([string(credentialsId: 'DockerHubPasswd', variable: 'passwd')]) 
                     {
                         sh 'docker login -u aryanatel1034 -p $passwd'
-                        sh 'docker push aryanatel1034/newbuild:$JOB_NAME.toLowerCase():v1.$BUILD_ID'
+                        sh 'docker push aryanatel1034/newbuild:$BUILD_NUMBER'
+                        
                     }
                 }
                 
