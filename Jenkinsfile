@@ -88,17 +88,13 @@ pipeline {
                 }
             }
         }
-        //  TILL 1:21:00
-
-        // stage('compile') {
-        //     steps{
-                
-        //         script{
-        //             sh "mvn compile"
-
-        //         }
-        //     }
-        // }
+        stage("Docker Image Build"){
+            steps{
+                sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID'
+                sh 'docker images tag $JOB_NAME:v1.$BUILD_ID AryanAtel/$JOB_NAME:v1.$BUILD_ID' 
+                 sh 'docker images tag $JOB_NAME:v1.$BUILD_ID AryanAtel/$JOB_NAME:latest' 
+            }
+        }
        
        
     }
