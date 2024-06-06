@@ -81,8 +81,9 @@ pipeline {
             
             steps{
 
-                script{
-                def readPom= readMavenPom file: 'pom.xml'
+                script
+                {
+                    def readPom= readMavenPom file: 'pom.xml'
 
                     nexusArtifactUploader artifacts: 
                     [
@@ -105,20 +106,30 @@ pipeline {
                 
             }
         }
-        stage("Docker Image Build"){
-            steps{
+        stage("Docker Image Build")
+        {
+            steps
+            {
                 sh 'docker image build -t $JOB_NAME.toLowerCase():v1.$BUILD_ID'
                 sh 'docker images tag $JOB_NAME.toLowerCase():v1.$BUILD_ID aryanatel1034/$JOB_NAME.toLowerCase():v1.$BUILD_ID' 
                 sh 'docker images tag $JOB_NAME.toLowerCase():v1.$BUILD_ID aryanatel1034/$JOB_NAME.toLowerCase():latest' 
             }
         }
 
-         stage("Push Image to DockerHub"){
-            steps{
-                withCredentials([string(credentialsId: 'DockerHubPasswd', variable: 'passwd')]) {
-                    sh 'docker login -u aryanatel1034 -p $passwd'
+         stage("Push Image to DockerHub")
+         {
+            steps
+            {
+                script
+                {
+
+                    withCredentials([string(credentialsId: 'DockerHubPasswd', variable: 'passwd')]) 
+                    {
+                        sh 'docker login -u aryanatel1034 -p $passwd'
+                        sh 'docker push aryanatel1034/newbuild:$JOB_NAME.toLowerCase():v1.$BUILD_ID'
+                    }
                 }
-                sh 'docker push aryanatel1034/newbuild:$JOB_NAME.toLowerCase():v1.$BUILD_ID'
+                
             }
         }
        
