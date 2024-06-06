@@ -84,7 +84,7 @@ pipeline {
                withMaven(globalMavenSettingsConfig: 'global-settings', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true)
                 {
     
-                sh "mvn clean deploy"
+                sh "mvn deploy"
                 }
             }
         }
