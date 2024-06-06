@@ -78,15 +78,13 @@ pipeline {
             }
         }
         stage('Publish to Nexus') {
-            // TODO 1:17:09
+            
             steps{
-               //  // todo
-               // withMaven(globalMavenSettingsConfig: 'global-settings', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true)
-               //  {
-    
-               //  sh "mvn deploy"
 
-                nexusArtifactUploader artifacts: 
+                script{
+                def readPom= readMavenPom file: 'pom.xml'
+
+                    nexusArtifactUploader artifacts: 
                     [
                         [
                             artifactId: 'springboot',
@@ -94,22 +92,33 @@ pipeline {
                             file: 'target/Uber.jar',
                             type: 'jar'
                         ]
-                    ], credentialsId: 'nexus-auth', 
+                    ], 
+                    credentialsId: 'nexus-auth', 
                     groupId: 'com.example', 
                     nexusUrl: '34.227.125.171:8081', 
                     nexusVersion: 'nexus3', 
                     protocol: 'http',
                     repository: 'DemoAppRelease', 
-                    version: '1.0.1'
-                // }
+                    version: "${readPom.version}"
+                }
+               
                 
             }
         }
         stage("Docker Image Build"){
             steps{
                 sh 'docker image build -t $JOB_NAME.toLowerCase():v1.$BUILD_ID'
-                sh 'docker images tag $JOB_NAME.toLowerCase():v1.$BUILD_ID AryanAtel/$JOB_NAME.toLowerCase():v1.$BUILD_ID' 
-                 sh 'docker images tag $JOB_NAME.toLowerCase():v1.$BUILD_ID AryanAtel/$JOB_NAME.toLowerCase():latest' 
+                sh 'docker images tag $JOB_NAME.toLowerCase():v1.$BUILD_ID aryanatel1034/$JOB_NAME.toLowerCase():v1.$BUILD_ID' 
+                sh 'docker images tag $JOB_NAME.toLowerCase():v1.$BUILD_ID aryanatel1034/$JOB_NAME.toLowerCase():latest' 
+            }
+        }
+
+         stage("Push Image to DockerHub"){
+            steps{
+                withCredentials([string(credentialsId: 'DockerHubPasswd', variable: 'passwd')]) {
+                    sh 'docker login -u aryanatel1034 -p $passwd'
+                }
+                sh 'docker push aryanatel1034/newbuild:$JOB_NAME.toLowerCase():v1.$BUILD_ID'
             }
         }
        
