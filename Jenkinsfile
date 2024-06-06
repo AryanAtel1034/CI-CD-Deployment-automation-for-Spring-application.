@@ -110,9 +110,9 @@ pipeline {
         {
             steps
             {
-                sh 'docker image build -t $BUILD_NUMBER:v1.$BUILD_ID'
-                sh 'docker images tag $BUILD_NUMBER:v1.$BUILD_ID aryanatel1034/$JOB_NAME:v1.$BUILD_ID' 
-                sh 'docker images tag $JOBBUILD_NUMBER_NAME.:v1.$BUILD_ID aryanatel1034/$JOB_NAME:latest' 
+                sh 'docker build -t $BUILD_NUMBER:v1.$BUILD_ID .'
+                sh 'docker tag $BUILD_NUMBER:v1.$BUILD_ID aryanatel1034/$JOB_NAME:v1.$BUILD_ID' 
+                sh 'docker tag $JOBBUILD_NUMBER_NAME.:v1.$BUILD_ID aryanatel1034/$JOB_NAME:latest' 
             }
         }
 
