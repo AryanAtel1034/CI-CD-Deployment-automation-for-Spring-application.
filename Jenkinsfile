@@ -101,8 +101,8 @@ pipeline {
                     protocol: 'http',
                     repository: 'DemoAppRelease', 
                     version: '1.0.1'
+                // }
                 
-                }
             }
         }
         stage("Docker Image Build"){
