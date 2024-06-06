@@ -80,11 +80,28 @@ pipeline {
         stage('Publish to Nexus') {
             // TODO 1:17:09
             steps{
-                // todo
-               withMaven(globalMavenSettingsConfig: 'global-settings', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true)
-                {
+               //  // todo
+               // withMaven(globalMavenSettingsConfig: 'global-settings', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true)
+               //  {
     
-                sh "mvn deploy"
+               //  sh "mvn deploy"
+
+                nexusArtifactUploader artifacts: 
+                    [
+                        [
+                            artifactId: 'springboot',
+                            classifier: '',
+                            file: 'target/Uber.jar',
+                            type: 'jar'
+                        ]
+                    ], credentialsId: 'nexus-auth', 
+                    groupId: 'com.example', 
+                    nexusUrl: '34.227.125.171:8081', 
+                    nexusVersion: 'nexus3', 
+                    protocol: 'http',
+                    repository: 'DemoAppRelease', 
+                    version: '1.0.0'
+                
                 }
             }
         }
