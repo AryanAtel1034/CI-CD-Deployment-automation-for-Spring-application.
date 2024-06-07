@@ -115,6 +115,14 @@ pipeline {
             }
         }
 
+        stage('Docker Image Scan (Trivy)') {
+  
+                steps{
+                    sh "trivy fs --format table -o trivy-fs-report.html ."
+
+                }
+            
+        }
          stage("Push Image to DockerHub")
          {
             steps
@@ -130,6 +138,15 @@ pipeline {
                     }
                 }
                 
+            }
+        }
+
+        stage("Deploy to EKS "){
+            steps{
+                script{
+                    // sh '/usr/local/bin/kubectl create namespace devops-tools'
+                    kubernetesDeploy(configs: 'deploymentservice.yaml' , 'Serviceaccount.yaml', 'PersistantVolume.yaml', kubeconfigId: 'Newmini')
+                }
             }
         }
        
