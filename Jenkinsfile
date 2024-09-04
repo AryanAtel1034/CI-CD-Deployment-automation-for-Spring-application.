@@ -33,14 +33,14 @@ pipeline {
                 
                 script{
                     
-                    sh 'mvn test'
+                    sh 'mvn test' // Maven is  used 
                 }
             }
         }
         stage('File System Scan (Trivy)') {
   
                 steps{
-                    sh "trivy fs --format table -o trivy-fs-report.html ."
+                    sh "trivy fs --format table -o trivy-fs-report.html ." // Used for Vulnerability Test 
 
                 }
             
